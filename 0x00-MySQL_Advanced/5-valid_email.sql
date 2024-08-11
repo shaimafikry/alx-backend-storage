@@ -9,7 +9,7 @@ BEFORE UPDATE ON users  -- event time trigger table
 FOR EACH ROW -- EXCUTE ON EVERY ROW
 BEGIN -- trigger body
   IF NEW.email != OLD.email THEN
-    SET NEW.valid_email = 0;
+    SET NEW.valid_email = 1;
   ELSE
     SET NEW.valid_email = NEW.valid_email
   END IF;
