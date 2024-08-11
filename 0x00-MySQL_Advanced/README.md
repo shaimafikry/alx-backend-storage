@@ -23,7 +23,9 @@ CREATE TABLE employees (
 
 ### 2. Optimizing Queries by Adding Indexes
 
-Indexes are used to speed up the retrieval of rows by using a pointer. An index can be created on one or more columns of a table. 
+Indexes are used to speed up the retrieval of rows by using a pointer. An index can be created on one or more columns of a table.
+
+Selecting what to index is probably the most challenging part to indexing your databases. Determining what is important enough to index and what is benign enough to not index. Generally speaking, indexing works best on those columns that are the subject of the WHERE clauses in your commonly executed queries. 
 
 - **CREATE INDEX**: Creates a new index.
 - **UNIQUE INDEX**: Ensures that all values in the indexed column(s) are unique.
@@ -36,6 +38,8 @@ CREATE INDEX idx_employee_lastname ON employees(last_name);
 **Considerations:**
 - Indexes improve read performance but can slow down write operations (INSERT, UPDATE, DELETE).
 - Use indexes on columns that are frequently used in `WHERE`, `JOIN`, and `ORDER BY` clauses.
+
+<h3><a href = 'https://www.youtube.com/watch?v=BIlFTFrEFOI'>Visualization about indexing </a></h3>
 
 ### 3. Stored Procedures and Functions in MySQL
 
@@ -104,3 +108,29 @@ END;
 - **AFTER Trigger**: Executes after the triggering event.
 
 Triggers can help maintain data integrity and enforce business rules automatically.
+Sure! Let’s break down the SQL query:
+
+```sql
+SELECT band_name, COALESCE(split, 2020) - formed AS lifespan
+FROM metal_bands
+WHERE style LIKE '%Glam rock%';
+```
+
+### Explanation
+
+1. **`SELECT band_name, COALESCE(split, 2020) - formed AS lifespan`**:
+   - **`band_name`**: This selects the `band_name` column from the `metal_bands` table.
+   - **`COALESCE(split, 2020) - formed`**:
+     - **`COALESCE(split, 2020)`**: The `COALESCE()` function returns the first non-null value among its arguments. In this case, if `split` is `NULL`, it will use `2020` instead. This handles cases where the `split` year might be missing (i.e., the band hasn’t split or the `split` year is unknown).
+     - **`- formed`**: Subtracts the `formed` year from the result of `COALESCE(split, 2020)`. This calculates the lifespan of the band based on the `split` year or `2020` if `split` is `NULL`.
+   - **`AS lifespan`**: This aliases the result of the calculation as `lifespan`.
+
+2. **`FROM metal_bands`**:
+   - Specifies that the data is coming from the `metal_bands` table.
+
+3. **`WHERE style LIKE '%Glam rock%'`**:
+   - **`LIKE '%Glam rock%'`**: The `LIKE` operator is used for pattern matching. The `%` symbols are wildcards that match any sequence of characters. This condition filters the rows to include only those where the `style` column contains the substring `'Glam rock'` anywhere within it. It allows for variations like `'Glam rock'`, `'Heavy Glam rock'`, or `'Glam rock and Metal'`.
+
+### Summary
+
+This query calculates the `lifespan` of bands where the `style` contains `'Glam rock'`. If a band has a `NULL` value for the `split` year, it uses `2020` as a default value to compute the lifespan. The result is a list of band names and their calculated lifespan.
