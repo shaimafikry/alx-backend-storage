@@ -2,15 +2,16 @@
 
 -- Context: Nothing related to MySQL, but perfect for user email validation - distribute the logic to the database itself!
 
+DROP TRIGGER IF EXISTS email_reset;
 DELIMITER // -- DELIMTER CHANGE
 CREATE TRIGGER email_reset
-AFTER UPDATE ON users  -- event time trigger table
+BEFORE UPDATE ON users  -- event time trigger table
 FOR EACH ROW -- EXCUTE ON EVERY ROW
 BEGIN -- trigger body
   IF NEW.email != OLD.email THEN
     SET NEW.valid_email = 1
   ELSE
-    SET valid_email = 0
+    SET NEW.valid_email = NEW.valid_email
   END IF;
 END //
 DELIMITER ; -- DELEIMTER RETRIVE
