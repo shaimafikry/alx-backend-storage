@@ -7,11 +7,10 @@ CREATE TRIGGER email_reset
 AFTER UPDATE ON users  -- event time trigger table
 FOR EACH ROW -- EXCUTE ON EVERY ROW
 BEGIN -- trigger body
-  UPDATE users
   IF NEW.email != OLD.email THEN
     SET NEW.valid_email = 1
   ELSE
-    SET NEW.valid_email = 0
+    SET valid_email = 0
   END IF;
 END //
 DELIMITER ; -- DELEIMTER RETRIVE
