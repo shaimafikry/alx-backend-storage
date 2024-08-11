@@ -4,9 +4,10 @@
 
 DELIMITER // -- DELIMTER CHANGE
 CREATE TRIGGER email_reset
-BEFORE UPDATE ON users  -- event time trigger table
+AFTER UPDATE ON users  -- event time trigger table
 FOR EACH ROW -- EXCUTE ON EVERY ROW
 BEGIN -- trigger body
+  UPDATE users
   IF NEW.email != OLD.email THEN
     SET NEW.valid_email = 1
   ELSE
