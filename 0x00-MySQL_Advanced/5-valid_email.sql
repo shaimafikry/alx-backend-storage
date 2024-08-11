@@ -9,7 +9,7 @@ FOR EACH ROW -- EXCUTE ON EVERY ROW
 BEGIN -- trigger body
   IF NEW.email != OLD.email THEN
     UPDATE users
-    SET valid_email = 1
+    SET valid_email = 0
     WHERE id = NEW.id;
   END IF;
 END //
