@@ -15,5 +15,4 @@ WHEN split <= 2020 THEN split - formed
 ELSE 2020 - formed
 END AS lifespan
 FROM metal_bands
-WHERE style LIKE '%Glam rock%'
-ORDER BY lifespan DESC;
+WHERE style LIKE '%Glam rock%';
