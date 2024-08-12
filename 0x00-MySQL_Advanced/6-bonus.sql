@@ -22,15 +22,14 @@
 -- routine_body:      
 -- Valid SQL routine statement
 DROP PROCEDURE IF EXISTS AddBonus;
-DELIMITER \\
+DELIMITER //
 CREATE PROCEDURE AddBonus (IN user_id INT, IN project_name VARCHAR(225), IN score INT)
 BEGIN
   -- define a var to hold project user_id
   DECLARE project_id INT;
-  -- Initialize project_id to NULL
-  SET project_id = NULL;
-  -- add id value to project_id
-  SELECT id INTO project_id
+  -- SET project_id = NULL;   -- Initialize project_id to NULL
+
+  SELECT id INTO project_id  -- add id value to project_id
   FROM projects
   WHERE name = project_name;
 
@@ -42,5 +41,5 @@ BEGIN
   END IF;
   INSERT INTO corrections(user_id, project_id, score)
   VALUES (user_id, project_id, score);
-END \\
+END //
 DELIMITER ;
