@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ module for redis task"""
 import redis
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Union
 import uuid
 
 
@@ -11,7 +11,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data: Any) -> str:
+    def store(self, data: Union[float, str, int , bytes]) -> str:
         """ store key """
         key = str(uuid.uuid4())
         self._redis.set(key, data)
