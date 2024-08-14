@@ -11,7 +11,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data: Union[float, str, int , bytes]) -> str:
+    def store(self, data: Union[float, str, int, bytes]) -> str:
         """ store key """
         key = str(uuid.uuid4())
         self._redis.set(key, data)
@@ -26,10 +26,10 @@ class Cache:
             return fn(value)
         return value
 
-    def get_str(self, value) -> Optional[str]:
+    def get_str(self, key: str) -> Optional[str]:
         """ return data as string"""
-        pass
+        return self.get(key, fn=lambda k: k.decode('utf-8'))
 
-    def get_int(self, value) -> Optional[int]:
+    def get_int(self, key: str) -> Optional[int]:
         """ return data as integer"""
-        pass
+        return self.get(key, fn=int)
