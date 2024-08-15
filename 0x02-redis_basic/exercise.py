@@ -19,8 +19,7 @@ def count_calls(method: Callable) -> Callable:
         # including the class it belongs to. For example, for
         # amethod foo in class Bar, foo.__qualname__ would
         # return'Bar.foo'.
-        key = method.__qualname__
-        self._redis.incr(key)
+        self._redis.incr(method.__qualname__)
         return method(self, *arg, **kwargs)
     return wrapper
 
