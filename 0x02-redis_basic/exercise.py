@@ -8,9 +8,9 @@ from functools import wraps
 
 # Above Cache define a count_calls decorator that takes
 # a single method Callable argument and returns a Callable.
-def count_calls(fn: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """ count calls"""
-    @wraps(fn)
+    @wraps(method)
     # this func gonna create anew key wth the method name
     # and increse its value every time it's called
     def wrapper(self, *arg, **kwargs):
@@ -19,9 +19,9 @@ def count_calls(fn: Callable) -> Callable:
         # including the class it belongs to. For example, for
         # amethod foo in class Bar, foo.__qualname__ would
         # return'Bar.foo'.
-        key = fn.__qualname__
+        key = method.__qualname__
         self._redis.incr(key)
-        return fn(self, *arg, **kwargs)
+        return method(self, *arg, **kwargs)
     return wrapper
 
 
