@@ -3,24 +3,23 @@
 import redis
 from typing import Any, Callable, Optional, Union, T
 import uuid
-from functools import wraps
+import functools
 
 
 # Above Cache define a count_calls decorator that takes
 # a single method Callable argument and returns a Callable.
 def count_calls(method: Callable) -> Callable:
     """ count calls"""
-    # attribute provides the qualified name of a method,
-    # including the class it belongs to. For example, for
-    # amethod foo in class Bar, foo.__qualname__ would
-    # return'Bar.foo'.
-    key = method.__qualname__
-
-    @wraps(method)
+    @functools.wraps(method)
     # this func gonna create anew key wth the method name
     # and increse its value every time it's called
     def wrapper(self, *arg, **kwargs):
         """ the wrraper func"""
+        # attribute provides the qualified name of a method,
+        # including the class it belongs to. For example, for
+        # amethod foo in class Bar, foo.__qualname__ would
+        # return'Bar.foo'.
+        key = method.__qualname__
         self._redis.incr(key)
         return method(self, *arg, **kwargs)
     return wrapper
