@@ -18,6 +18,7 @@ def count_get(method: Callable) -> str:
         if result:
             return result.decode('utf-8')
         result = method(url)
+        con.set(f'count:{url}', 0)
         con.setex(f'result:{url}', 10, result)
         con.incr(key)
         return result
