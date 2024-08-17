@@ -12,13 +12,15 @@ con = redis.Redis()
 def count_get(method: Callable) -> str:
     """count how many method called"""
     @wraps(method)
-    def wrapper(url):
-        req = method(url)
+    def wrapper(url) -> str:
         key = f"count:{url}"
-        result = f"cache:{url}"
-        con.setex(result, 10, req)
         con.incr(key)
-        return req
+        result = con.get(f"result:{url}")
+        if result:
+            return result.decode('utf-8')
+        result = method(url)
+        con.setex(f'result:{url}', 10, result)
+        return result
     return wrapper
 
 
