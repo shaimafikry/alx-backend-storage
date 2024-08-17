@@ -13,15 +13,14 @@ def count_get(method: Callable) -> str:
     """count how many method called"""
     @wraps(method)
     def wrapper(url) -> str:
-        key = f"count:{url}"
-        result = con.get(f"result:{url}")
-        if result:
-            con.incr(key)
+      key = f"count:{url}"
+      con.incr(key)
+      result = con.get(f"result:{url}")
+      if result:
             return result.decode('utf-8')
-        result = method(url)
-        con.setex(f'result:{url}', 10, result)
-        con.incr(key)
-        return result
+      result = method(url)
+      con.setex(f'result:{url}', 10, result)
+      return result
     return wrapper
 
 
