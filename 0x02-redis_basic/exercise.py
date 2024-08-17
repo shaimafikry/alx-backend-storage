@@ -23,6 +23,7 @@ def count_calls(method: Callable) -> Callable:
         return method(self, *arg, **kwargs)
     return wrapper
 
+
 def call_history(method: Callable) -> Callable:
     """ to store the history of inputs and outputs for
     a particular function."""
@@ -38,6 +39,19 @@ def call_history(method: Callable) -> Callable:
         self._redis.rpush(outputs, str(result))
         return result
     return wrapper
+
+
+def replay(method: Callable) -> None:
+    """ display the history of calls of a particular function."""
+    r = redis.Redis()
+    meth_name = method.__qualname__
+    num_calls: int = r.get(meth_name)
+    print(f"{meth_name} was called {num_calls.decode('utf-8')} times:")
+    list_input: List = r.lrange(f"{meth_name}:inputs", 0, -1)
+    list_output: List = r.lrange(f"{meth_name}:outputs", 0, -1)
+    all = zip(list_input, list_output)
+    for name, res in all:
+        print(f"{meth_name}(*{name.decode('utf-8')}) -> {res.decode('utf-8')}")
 
 
 class Cache:
