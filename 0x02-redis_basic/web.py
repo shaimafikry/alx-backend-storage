@@ -15,8 +15,8 @@ def count_get(method: Callable) -> str:
     def wrapper(url):
         req = method(url)
         key = f"count:{url}"
-        cashe_key = f"cache:{url}"
-        con.setex(cashe_key, 10, req)
+        result = f"cache:{url}"
+        con.setex(result, 10, req)
         con.incr(key)
         return req
     return wrapper
