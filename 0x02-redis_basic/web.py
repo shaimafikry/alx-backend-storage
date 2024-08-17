@@ -16,7 +16,7 @@ def count_get(method: Callable) -> str:
         req = method(url)
         key = f"count:{url}"
         cashe_key = f"cache:{url}"
-        con.set(cashe_key, 10, req)
+        con.setex(cashe_key, 10, req)
         con.incr(key)
         return req
     return wrapper
@@ -28,10 +28,11 @@ def get_page(url: str) -> str:
     content of a particular URL and returns it."""
     data = requests.get(url)
     return data.text
+# if __name__ == "__main__":
 
-# url = "http://slowwly.robertomurray.co.uk"
-# page_content = get_page(url)
-# print(f"Page content: {len(page_content)}")
+# 	url = "http://google.com"
+# 	page_content = get_page(url)
+# 	print(f"Page content: {len(page_content)}")
 
-# # Print the count of accesses
-# print(f"Access count: {con.get(f'count:{url}').decode('utf-8')}")
+# 	# Print the count of accesses
+# 	print(f"Access count: {con.get(f'count:{url}').decode('utf-8')}")
