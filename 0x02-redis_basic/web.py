@@ -14,12 +14,12 @@ def count_get(method: Callable) -> str:
     @wraps(method)
     def wrapper(url) -> str:
         key = f"count:{url}"
-        con.incr(key)
         result = con.get(f"result:{url}")
         if result:
             return result.decode('utf-8')
         result = method(url)
         con.setex(f'result:{url}', 10, result)
+        con.incr(key)
         return result
     return wrapper
 
