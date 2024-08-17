@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ module for redis task"""
 import redis
-from typing import Any, Callable, Optional, Union, T
+from typing import Any, Callable, Optional, Union, T, List
 import uuid
 import functools
 
@@ -24,6 +24,23 @@ def count_calls(method: Callable) -> Callable:
     return wrapper
 
 
+def call_history(method: Callable) -> Callable:
+    """ to store the history of inputs and outputs for
+    a particular function."""
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        # keys names = methodname: input
+        inputs: List = f"{method.__qualname__}:inputs"
+        outputs: List = f"{method.__qualname__}:outputs"
+        # list for inputs
+        self._redis.rpush(inputs, str(*args))
+        result = method(self, *args, *kwargs)
+        # list for outputs
+        self._redis.rpush(outputs, str(result))
+        return result
+    return wrapper
+
+
 class Cache:
     """ cashe class"""
     def __init__(self):
@@ -31,6 +48,7 @@ class Cache:
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """ store key """
         key = str(uuid.uuid4())
