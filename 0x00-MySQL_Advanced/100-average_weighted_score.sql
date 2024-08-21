@@ -18,7 +18,7 @@ BEGIN
 	SELECT SUM(score * weight) / SUM(weight)
 	INTO weight_score
 	FROM projects
-	JOIN corrections ON correction.project_id = project.id
+	JOIN corrections ON corrections.project_id = projects.id
 	WHERE corrections.user_id = user_id;
 	
 		-- updated the table
