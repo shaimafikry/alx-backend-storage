@@ -7,6 +7,7 @@
 
 -- how to get weight value:
 -- multiple every grade * its weight value / sum of weights
+DROP PROCEDURE IF EXISTS ComputeAverageScoreForUser;
 
 DELIMITER //
 
@@ -17,5 +18,10 @@ BEGIN
 	INTO weigth_score
 	FROM projects, corrections
 	WHERE corrections.user_id = user_id;
+	
+	-- updated the table
+	UPDATE users
+	SET average_score = weigth_score
+	WHERE id = user_id;
 END //
 DELIMITER;
