@@ -24,4 +24,4 @@ BEGIN
 	SET average_score = weigth_score
 	WHERE id = user_id;
 END //
-DELIMITER;
+DELIMITER ;
