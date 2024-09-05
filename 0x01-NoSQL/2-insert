@@ -1,0 +1,4 @@
+// insert a row
+// using insert , create the collectio of it doesn exist
+
+my_db.school.insert({"name": "Holberton school"})
