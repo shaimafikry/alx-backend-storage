@@ -160,3 +160,190 @@ Each NoSQL database has its own methods for inserting, updating, and deleting da
         ```
 
 MongoDB provides a lot of flexibility, making it a popular choice for applications that require flexible schemas, high availability, and scalability.
+
+
+NO SQL (not only sql)
+It's more like upgrade of sql (Structured Query Language.)
+
+Differences
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>SQL Databases</th>
+            <th>NoSQL Databases</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Data model</td>
+            <td>Relational</td>
+            <td>Nonrelational</td>
+        </tr>
+        <tr>
+            <td>Structure</td>
+            <td>Table-based, with columns and rows</td>
+            <td>Document based, key-value pairs, graph, or wide-column</td>
+        </tr>
+        <tr>
+            <td>Schema</td>
+            <td>A predefined and strict schema in which every record (row) is of the same nature and possesses the same properties</td>
+            <td>A dynamic schema or schemaless which means that records don’t need to be of the same nature</td>
+        </tr>
+        <tr>
+            <td>Query language</td>
+            <td>Structured Query Language (SQL)</td>
+            <td>Varies from database to database</td>
+        </tr>
+        <tr>
+            <td>Scalability</td>
+            <td>Vertical</td>
+            <td>Horizontal</td>
+        </tr>
+        <tr>
+            <td>ACID transactions (Atomicity, Consistency, Isolation, and Durability)</td>
+            <td>Supported</td>
+            <td>Supported, depending on the specific NoSQL database</td>
+        </tr>
+        <tr>
+            <td>Ability to add new properties</td>
+            <td>Need to alter the schema first</td>
+            <td>Possible without disturbing anything</td>
+        </tr>
+    </tbody>
+</table>
+
+ 
+
+
+```IN GENERAL NOSQL inherts from javascript (camel case naming system and language structure)```
+
+# Using MongoDB With Python (PyMongo)
+
+MongoDB provides an official Python driver called PyMongo.
+
+```
+>>> from pymongo import MongoClient
+>>> client = MongoClient()
+>>> client
+MongoClient(host=['localhost:27017'], ..., connect=True)
+client = MongoClient(host="localhost", port=27017)
+```
+ 
+
+Creating database / accessing a data base
+
+```
+>>> db = client.rptutorials
+>>> db
+Database(MongoClient(host=['localhost:27017'], ..., connect=True), 'rptutorials')
+```
+
+
+	
+# Return values of queries in pymonog:
+In PyMongo, the results of queries on MongoDB collections can vary based on the method used. Here’s an overview of the different methods and the types of values they return:
+
+### 1. `find()`
+- **Returns**: A `pymongo.cursor.Cursor` object.
+- **Description**: This is an iterable that allows you to iterate over the documents matching the query. It does not load all documents into memory at once, which is useful for handling large datasets.
+
+**Example**:
+```python
+cursor = collection.find({"name": "Alice"})
+for document in cursor:
+    print(document)
+```
+
+### 2. `find_one()`
+- **Returns**: A single document (dictionary) or `None`.
+- **Description**: Returns the first document that matches the query. If no documents match, it returns `None`.
+
+**Example**:
+```python
+document = collection.find_one({"name": "Alice"})
+print(document)
+```
+
+### 3. `insert_one()`
+- **Returns**: An `InsertOneResult` object.
+- **Description**: This object contains information about the insert operation. You can access the `_id` of the inserted document using the `inserted_id` attribute.
+
+**Example**:
+```python
+result = collection.insert_one({"name": "Bob", "age": 30})
+print(result.inserted_id)
+```
+
+### 4. `insert_many()`
+- **Returns**: An `InsertManyResult` object.
+- **Description**: This object contains information about the insert operation. You can access the `_ids` of the inserted documents using the `inserted_ids` attribute.
+
+**Example**:
+```python
+result = collection.insert_many([{"name": "Carol"}, {"name": "David"}])
+print(result.inserted_ids)
+```
+
+### 5. `update_one()`
+- **Returns**: An `UpdateResult` object.
+- **Description**: Contains information about the update operation. You can check the number of documents modified using `modified_count`.
+
+**Example**:
+```python
+result = collection.update_one({"name": "Alice"}, {"$set": {"age": 25}})
+print(result.modified_count)
+```
+
+### 6. `update_many()`
+- **Returns**: An `UpdateResult` object.
+- **Description**: Contains information about the update operation. You can check the number of documents modified using `modified_count`.
+
+**Example**:
+```python
+result = collection.update_many({"age": {"$lt": 30}}, {"$set": {"status": "young"}})
+print(result.modified_count)
+```
+
+### 7. `delete_one()`
+- **Returns**: A `DeleteResult` object.
+- **Description**: Contains information about the delete operation. You can check the number of documents deleted using `deleted_count`.
+
+**Example**:
+```python
+result = collection.delete_one({"name": "Bob"})
+print(result.deleted_count)
+```
+
+### 8. `delete_many()`
+- **Returns**: A `DeleteResult` object.
+- **Description**: Contains information about the delete operation. You can check the number of documents deleted using `deleted_count`.
+
+**Example**:
+```python
+result = collection.delete_many({"age": {"$lt": 30}})
+print(result.deleted_count)
+```
+
+### 9. `aggregate()`
+- **Returns**: A `pymongo.cursor.Cursor` object.
+- **Description**: Returns a cursor that iterates over the results of an aggregation pipeline.
+
+**Example**:
+```python
+pipeline = [
+    {"$match": {"age": {"$gte": 18}}},
+    {"$group": {"_id": "$status", "count": {"$sum": 1}}}
+]
+cursor = collection.aggregate(pipeline)
+for document in cursor:
+    print(document)
+```
+
+### Summary
+
+- **`find()`** and **`aggregate()`** return a cursor that you can iterate over.
+- **`find_one()`** returns a single document or `None`.
+- **`insert_one()`** and **`insert_many()`** return result objects containing the `_id` or `_ids` of the inserted documents.
+- **`update_one()`** and **`update_many()`** return result objects containing the count of modified documents.
+- **`delete_one()`** and **`delete_many()`** return result objects containing the count of deleted documents.
