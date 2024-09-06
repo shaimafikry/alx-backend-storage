@@ -347,3 +347,7 @@ for document in cursor:
 - **`insert_one()`** and **`insert_many()`** return result objects containing the `_id` or `_ids` of the inserted documents.
 - **`update_one()`** and **`update_many()`** return result objects containing the count of modified documents.
 - **`delete_one()`** and **`delete_many()`** return result objects containing the count of deleted documents.
+
+
+# REGEX WITH QUERY
+db.school.find({"name": {"$regex": "Holberton", "$options": "i"}})

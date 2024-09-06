@@ -1,0 +1,5 @@
+// find ith regex
+
+
+
+db.school.find({"name": {"$regex": "Holberton", "$options": "i"}})
