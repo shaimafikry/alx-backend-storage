@@ -350,4 +350,32 @@ for document in cursor:
 
 
 # REGEX WITH QUERY
+In MongoDB queries, you use regular expressions to perform pattern matching. 
+
+query to find documents where the `name` field contains "Holberton":
+
+```python
 db.school.find({"name": {"$regex": "Holberton", "$options": "i"}})
+```
+
+### Explanation:
+- **`"$regex": "Holberton"`**: Specifies the regular expression pattern to match. It will find documents where the `name` field contains "Holberton" anywhere in the string.
+- **`"$options": "i"`**: Makes the search case-insensitive. You can remove this if you want a case-sensitive search.
+
+You can use this query in PyMongo as follows:
+
+```python
+from pymongo import MongoClient
+
+# Replace with your actual connection details
+client = MongoClient("mongodb://localhost:27017/")
+db = client.your_database_name
+collection = db.school
+
+# Perform the query
+results = collection.find({"name": {"$regex": "Holberton", "$options": "i"}})
+
+# Print results
+for document in results:
+    print(document)
+```
