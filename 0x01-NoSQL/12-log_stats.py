@@ -6,7 +6,7 @@ from pymongo import MongoClient
 
 
 def main():
-    """main"""
+    """main function"""
     client = MongoClient()
     # access data base
     db = client.logs
