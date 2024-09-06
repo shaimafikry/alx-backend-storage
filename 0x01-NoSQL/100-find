@@ -2,4 +2,4 @@
 
 
 
-db.school.find({"name": {"$regex": "Holberton", "$options": "i"}})
+db.school.find({"name": {"$regex": "Holberton"}})
