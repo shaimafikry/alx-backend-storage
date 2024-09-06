@@ -29,7 +29,7 @@ def main():
     # print(data_method)
     print("Methods:")
     for k, v in method.items():
-        print(f"	Method {k}: {v}")
+        print(f"	method {k}: {v}")
     print(collection.count_documents({'path': '/status'}), "status check")
     # 94778 logs
     # Methods:
